@@ -518,11 +518,9 @@
  *
  * @param maxLevel
  * @text Maximum Level
- * @desc The max level this stat can be levelled to.
- * @type number
- * @default 10
- * @min 0
- * @max 9999999
+ * @desc The ID of the game variable that determines the max level this stat can be levelled to.
+ * @type string
+ * @default "1"
  *
  */
 
@@ -877,6 +875,8 @@ class Window_CustomStatList extends Window_SkillBase {
     if (!stat) {
       return false
     }
+    
+    let maxLevel = $gameVariables.value(Number(stat.maxLevel));
     const actor = this._actor;
     const defaultStat = this._defaultActor.customStats[stat.shortName];
     const points = Math.floor(this._actor._customStatPoints);
@@ -886,7 +886,7 @@ class Window_CustomStatList extends Window_SkillBase {
 
     switch (this.pressedButton) {
       case 'up':
-        return points > 0 && nextLevel <= stat.maxLevel
+                return points > 0 && nextLevel <= maxLevel
       case 'down':
         return points >= 0 && currentLevel - 1 >= defaultLevel
 
@@ -940,15 +940,15 @@ class Window_CustomSkillList extends Window_SkillBase {
     const value = actor.evalCustomFormula(skill.levelPerPoint);
     const downValue = actor.evalCustomFormula(`${skill.levelPerPoint}_leveldown_`);
     const pointCost = actor.evalCustomFormula(skill.skillPointCost);
-
+    let maxLevel = $gameVariables.value(Number(stat.maxLevel));
     const nextLevel = skill.currentLevel + value;
     const prevLevel = currentLevel - downValue;
     const defaultLevel = defaultActor._customSkills[this.index()]
       .currentLevel;
 
-    switch (this.pressedButton) {
-      case 'up':
-        return points > 0 && points >= pointCost && nextLevel <= skill.maxLevel
+      switch (this.pressedButton) {
+        case 'up':
+            return points > 0 && points >= pointCost && nextLevel <= maxLevel
       case 'down':
         return points >= 0 && prevLevel >= defaultLevel && prevLevel >= skill.initialLevel
 
@@ -1084,6 +1084,8 @@ class Window_Status extends Window_EquipStatus {
   }
 }
 
+
+
 class Game_CustomStat {
   constructor (data) {
     this.name = data.name;
@@ -1092,11 +1094,13 @@ class Game_CustomStat {
     this.description = data.description;
     this.initialLevel = data.initialLevel;
     this.currentLevel = data.currentLevel || data.initialLevel;
-    this.maxLevel = data.maxLevel;
+    this.maxLevel = data.maxLevel
     this.levelPerPoint = data.levelPerPoint || 1;
     // The level before any penalities or perks from notetags(items)
     this.defaultLevel = data.defaultLevel || 0;
   }
+
+ 
 
   addLevel (value = 1) {
     if (this.currentLevel >= this.maxLevel || this.currentLevel + value >= this.maxLevel) {
