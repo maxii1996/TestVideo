@@ -418,6 +418,20 @@ class SteamLink extends SteamLinkPlugin {
 
     super.register({});
 
+    PluginManager.registerCommand(this.pluginName, 'screenName', args => {
+      const variableId = Number(args.variableId);
+      const value = this.screenName;
+      $gameVariables.setValue(variableId, value);
+    });
+
+    PluginManager.registerCommand(this.pluginName, 'uiLanguage', args => {
+      const variableId = Number(args.variableId);
+      const value = this.uiLanguage;
+      $gameVariables.setValue(variableId, value);
+    });
+    
+    
+
     if (typeof require !== 'function') {
       return;
     }
