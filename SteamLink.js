@@ -677,16 +677,21 @@ class SteamLink extends SteamLinkPlugin {
   }
 }
 
+SteamLink.pluginCommand = function(command, args) {
+  let variableId = Number(args[0]);
+  switch (command) {
+      case 'screenName':
+          $gameVariables.setValue(variableId, this.screenName);
+          break;
+      // ...
+  }
+};
 
 
 class SteamLinkPluginCommand {
-  static screenName({ variableId }) {
-    const result = SteamLink.screenName(); // Asume que SteamLink.screenName es una función que devuelve el nombre de la pantalla
-    $gameVariables.setValue(variableId, result);
-  }
-
-  static uiLanguage({ variableId }) {
-    const result = SteamLink.uiLanguage(); // Asume que SteamLink.uiLanguage es una función que devuelve el idioma de la UI
+  static screenName(args) {
+    const variableId = Number(args.variableId);
+    const result = SteamLink.screenName;
     $gameVariables.setValue(variableId, result);
   }
 
@@ -694,7 +699,7 @@ class SteamLinkPluginCommand {
 }
 
 PluginManager.registerCommand('SteamLink', 'screenName', args => {
-  SteamLinkPluginCommand.screenName(args);
+  SteamLinkPluginCommand.screenName(JSON.parse(args));
 });
 
 PluginManager.registerCommand('SteamLink', 'uiLanguage', args => {
