@@ -1,6 +1,6 @@
 /*:
  * @target MZ
- * @plugindesc Customizable Circular Progress Bar Plugin 3
+ * @plugindesc Customizable Circular Progress Bar Plugin 2
  * 
  *
  * @help
@@ -187,6 +187,7 @@ class ProgressBar {
         context.fillText(processedText, this.textPosX, this.textPosY);
     }
     
+    
 
     remove() {
         SceneManager._scene.removeChild(this.sprite);
@@ -258,6 +259,7 @@ PluginManager.registerCommand('ProgressBar', 'generateNewCircularBar', args => {
         ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, switchId);
     });
 });
+
 
 
 PluginManager.registerCommand('ProgressBar', 'removeProgressBar', args => {
