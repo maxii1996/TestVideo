@@ -1,6 +1,6 @@
 /*:
  * @target MZ
- * @plugindesc Customizable Circular Progress Bar Plugin (Version 1 to fix)
+ * @plugindesc Customizable Circular Progress Bar Plugin (Version 1)
  * 
  *
  * @help
@@ -144,19 +144,32 @@ class ProgressBar {
         this.posY = posY;
         this.radius = radius;
         this.lineWidth = lineWidth;
-        this.color = [ColorManager.textColor(Number(color1)), ColorManager.textColor(Number(color2)), ColorManager.textColor(Number(color3))];
-        this.backgroundColor = ColorManager.textColor(Number(backgroundColor));
+        this.color = [this.parseColor(color1), this.parseColor(color2), this.parseColor(color3)];
+        this.backgroundColor = this.parseColor(backgroundColor);
         this.text = text;
         this.textPosX = textPosX;
         this.textPosY = textPosY;
         this.font = font;
         this.fontSize = fontSize;
-        this.fontColor = ColorManager.textColor(Number(fontColor));
+        this.fontColor = this.parseColor(fontColor);
         this.sprite = sprite;
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
         this.type = type;
 
         SceneManager._scene.addChild(this.sprite);
+    }
+
+    parseColor(colorNumber) {
+        // Define tus propios colores aquí
+        const colors = [
+            '#FFFFFF', // Color 0
+            '#FF0000', // Color 1
+            '#00FF00', // Color 2
+            '#0000FF', // Color 3
+            // Agrega más colores según sea necesario
+        ];
+
+        return colors[colorNumber];
     }
     
     draw() {
