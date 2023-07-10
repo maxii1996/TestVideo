@@ -122,6 +122,22 @@
  * @text Fill Color 3
  * @desc Third fill color of the progress bar (value from 0 to 31).
  *
+ * @arg colorOpacity
+* @type number
+* @text Color Opacity
+* @desc Opacity of the progress bar color (value from 0 to 1).
+* @default 1
+
+* @arg backgroundColorOpacity
+* @type number
+* @text Background Color Opacity
+* @desc Opacity of the progress bar background color (value from 0 to 1).
+* @default 1
+ * 
+ * 
+ * 
+ * 
+ * 
  * @arg backgroundColor
  * @type number
  * @text Background Color
@@ -168,7 +184,7 @@
  */
 
 class ProgressBar {
-    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
+    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type, colorOpacity, backgroundColorOpacity) {
         this.id = id;
         this.actualValue = actualValue;
         this.minValue = minValue;
@@ -177,8 +193,9 @@ class ProgressBar {
         this.posY = posY;
         this.radius = radius;
         this.lineWidth = lineWidth;
-        this.color = [this.parseColor(color1), this.parseColor(color2), this.parseColor(color3)];
-        this.backgroundColor = this.parseColor(backgroundColor);
+        this.color = [this.parseColor(color1, colorOpacity), this.parseColor(color2, colorOpacity), this.parseColor(color3, colorOpacity)];
+    this.backgroundColor = this.parseColor(backgroundColor, backgroundColorOpacity);
+
         this.text = text;
         this.textPosX = textPosX;
         this.textPosY = textPosY;
@@ -255,9 +272,16 @@ class ProgressBar {
 
 
 
-    parseColor(colorNumber) {
-        // Define your famous colors here
+    parseColor(color, opacity = 1) {
+        // Si el color comienza con '#', es un color hexadecimal
+        if (color.startsWith('#')) {
+            return color + Math.round(opacity * 255).toString(16).padStart(2, '0');
+        }
+    
+        // Si no, es un número de color
         const colors = [
+           
+            
             '#FF0000',  // Color 0: Red
             '#FFA500',  // Color 1: Orange
             '#FFFF00',  // Color 2: Yellow
@@ -300,10 +324,15 @@ class ProgressBar {
             '#4682B4',  // Color 39: Steel Blue
             '#FFFFFF',  // Color 40: White
             '#000000',  // Color 41: Black
+
+
+
+
         ];
     
-        return colors[Number(colorNumber) % colors.length] || '#FFFFFF'; // Make sure to return a default value
+        return colors[Number(color) % colors.length] || '#FFFFFF'; // Asegúrate de devolver un valor predeterminado
     }
+    
     
     
 
