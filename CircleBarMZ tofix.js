@@ -1,6 +1,6 @@
 /*:
  * @target MZ
- * @plugindesc Customizable Circular Progress Bar Plugin 3
+ * @plugindesc Customizable Circular Progress Bar Plugin 2
  * 
  *
  * @help
@@ -130,27 +130,26 @@
 
 
 class ProgressBar {
-    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
+    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, switchId) {
         this.id = id;
         this.actualValue = actualValue;
         this.minValue = $gameVariables.value(minValue);
         this.maxValue = $gameVariables.value(maxValue);
         this.switchId = switchId;
-        this.posX = posX;
-        this.posY = posY;
-        this.radius = radius;
-        this.lineWidth = lineWidth;
-        this.color = ColorManager.textColor(color);
-        this.backgroundColor = ColorManager.textColor(backgroundColor);
+        this.posX = $gameVariables.value(posX);
+        this.posY = $gameVariables.value(posY);
+        this.radius = $gameVariables.value(radius);
+        this.lineWidth = $gameVariables.value(lineWidth);
+        this.color = ColorManager.textColor($gameVariables.value(color));
+        this.backgroundColor = ColorManager.textColor($gameVariables.value(backgroundColor));
         this.text = text;
-        this.textPosX = textPosX;
-        this.textPosY = textPosY;
+        this.textPosX = $gameVariables.value(textPosX);
+        this.textPosY = $gameVariables.value(textPosY);
         this.font = font;
-        this.fontSize = fontSize;
-        this.fontColor = ColorManager.textColor(fontColor);
+        this.fontSize = $gameVariables.value(fontSize);
+        this.fontColor = ColorManager.textColor($gameVariables.value(fontColor));
         this.sprite = sprite;
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
-        this.type = type; 
 
         SceneManager._scene.addChild(this.sprite);
     }
@@ -202,9 +201,7 @@ class ProgressBar {
         text = text.replace(/\\party4\[(\w+)\]/g, (_, p1) => $gameParty.members()[3] ? (typeof $gameParty.members()[3][p1] === "function" ? $gameParty.members()[3][p1]() : $gameParty.members()[3][p1]) : 0);
         return text;
     }
-    
 }
-
 
 
 
