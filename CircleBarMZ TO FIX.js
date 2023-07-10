@@ -1,6 +1,6 @@
 /*:
  * @target MZ
- * @plugindesc Customizable Circular Progress Bar Plugin (Version 1)
+ * @plugindesc Customizable Circular Progress Bar Plugin (Version 1 to fix)
  * 
  *
  * @help
@@ -73,10 +73,20 @@
  * @text Line Width
  * @desc Width of the progress line.
  *
- * @arg color
+ * @arg color1
  * @type number
- * @text Fill Color
- * @desc Fill color of the progress bar (value from 0 to 31).
+ * @text Fill Color 1
+ * @desc First fill color of the progress bar (value from 0 to 31).
+ *
+ * @arg color2
+ * @type number
+ * @text Fill Color 2
+ * @desc Second fill color of the progress bar (value from 0 to 31).
+ *
+ * @arg color3
+ * @type number
+ * @text Fill Color 3
+ * @desc Third fill color of the progress bar (value from 0 to 31).
  *
  * @arg backgroundColor
  * @type number
@@ -125,7 +135,7 @@
 
 
 class ProgressBar {
-    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
+    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
         this.id = id;
         this.actualValue = actualValue;
         this.minValue = minValue;
@@ -134,22 +144,23 @@ class ProgressBar {
         this.posY = posY;
         this.radius = radius;
         this.lineWidth = lineWidth;
-        this.color = ColorManager.textColor(color);
-        this.backgroundColor = ColorManager.textColor(backgroundColor);
+        this.color = [ColorManager.textColor(Number(color1)), ColorManager.textColor(Number(color2)), ColorManager.textColor(Number(color3))];
+        this.backgroundColor = ColorManager.textColor(Number(backgroundColor));
         this.text = text;
         this.textPosX = textPosX;
         this.textPosY = textPosY;
         this.font = font;
         this.fontSize = fontSize;
-        this.fontColor = ColorManager.textColor(fontColor);
+        this.fontColor = ColorManager.textColor(Number(fontColor));
         this.sprite = sprite;
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
-        this.type = type; // añade esto al final de tu constructor
+        this.type = type;
 
         SceneManager._scene.addChild(this.sprite);
     }
-
+    
     draw() {
+  
         let value = $gameVariables.value(this.actualValue);
         value = Math.min(Math.max(value, this.minValue), this.maxValue);
         $gameVariables.setValue(this.actualValue, value);
@@ -167,7 +178,11 @@ class ProgressBar {
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
         context.lineWidth = this.lineWidth;
-        context.strokeStyle = this.color;
+        const gradient = context.createLinearGradient(0, 0, this.posX, this.posY);
+        gradient.addColorStop(0, this.color[0]);
+        gradient.addColorStop(0.5, this.color[1]);
+        gradient.addColorStop(1, this.color[2]);
+        context.strokeStyle = gradient;
         context.stroke();
 
         let processedText = this.processText(this.text);
@@ -245,12 +260,13 @@ Scene_Map.prototype.update = function() {
 };
 
 PluginManager.registerCommand('ProgressBar', 'showProgressBar', args => {
-    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor } = args;
+    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor } = args;
     let sprite = ProgressBars.list[id] ? ProgressBars.list[id].sprite : new Sprite();
     ImageManager.loadSystem('Window').addLoadListener(() => {
-        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor);
+        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor);
     });
 });
+
 
 PluginManager.registerCommand('ProgressBar', 'removeProgressBar', args => {
     const { id } = args;
