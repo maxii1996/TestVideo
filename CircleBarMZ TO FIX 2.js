@@ -23,6 +23,40 @@
  * 
  * 
  * 
+ * Color 0: Red
+ * Color 1: Orange
+ * Color 2: Amber
+ * Color 3: Yellow
+ * Color 4: Lime
+ * Color 5: Chartreuse
+ * Color 6: Green
+ * Color 7: Spring Green
+ * Color 8: Cyan
+ * Color 9: Azure
+ * Color 10: Blue
+ * Color 11: Navy
+ * Color 12: Indigo
+ * Color 13: Purple
+ * Color 14: Violet
+ * Color 15: Magenta
+ * Color 16: Pink
+ * Color 17: Salmon
+ * Color 18: Peach
+ * Color 19: Coral
+ * Color 20: Gold
+ * Color 21: Silver
+ * Color 22: Gray
+ * Color 23: Dark Gray
+ * Color 24: Brown
+ * Color 25: Maroon
+ * Color 26: Olive
+ * Color 27: Beige
+ * Color 28: Ivory
+ * Color 29: Cream
+ * Color 30: White
+ *
+ * 
+ * 
  * @command showProgressBar
  * @text Show Progress Bar
  * @desc Displays a progress bar with the specified parameters.
@@ -159,18 +193,7 @@ class ProgressBar {
         SceneManager._scene.addChild(this.sprite);
     }
 
-    parseColor(colorNumber) {
-        // Define tus propios colores aquí
-        const colors = [
-            '#FFFFFF', // Color 0
-            '#FF0000', // Color 1
-            '#00FF00', // Color 2
-            '#0000FF', // Color 3
-            // Agrega más colores según sea necesario
-        ];
-
-        return colors[colorNumber];
-    }
+   
     
     draw() {
   
@@ -182,6 +205,8 @@ class ProgressBar {
 
         this.sprite.bitmap.clear();
         const context = this.sprite.bitmap.context;
+        context.imageSmoothingEnabled = true; // Habilitar antialiasing
+
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
         context.lineWidth = this.lineWidth;
@@ -204,6 +229,10 @@ class ProgressBar {
         context.textBaseline = 'middle';
         context.fillStyle = this.fontColor;
         context.fillText(processedText, this.textPosX, this.textPosY);
+
+
+        
+
     }
 
 
@@ -220,6 +249,61 @@ class ProgressBar {
         text = text.replace(/\\party4\[(\w+)\]/g, (_, p1) => $gameParty.members()[3] ? (typeof $gameParty.members()[3][p1] === "function" ? $gameParty.members()[3][p1]() : $gameParty.members()[3][p1]) : 0);
         return text;
     }
+
+
+
+    parseColor(colorNumber) {
+        // Define your famous colors here
+        const colors = [
+            '#FF0000',  // Color 0: Red
+            '#FFA500',  // Color 1: Orange
+            '#FFFF00',  // Color 2: Yellow
+            '#00FF00',  // Color 3: Green
+            '#0000FF',  // Color 4: Blue
+            '#800080',  // Color 5: Purple
+            '#FF00FF',  // Color 6: Magenta
+            '#008080',  // Color 7: Teal
+            '#FFC0CB',  // Color 8: Light Pink
+            '#FF8C00',  // Color 9: Dark Orange
+            '#FFFFE0',  // Color 10: Light Yellow
+            '#008000',  // Color 11: Dark Green
+            '#00FFFF',  // Color 12: Cyan
+            '#000080',  // Color 13: Navy
+            '#FF69B4',  // Color 14: Hot Pink
+            '#FFD700',  // Color 15: Gold
+            '#FF4500',  // Color 16: Orange Red
+            '#FF6347',  // Color 17: Coral
+            '#7FFFD4',  // Color 18: Aquamarine
+            '#000000',  // Color 19: Black
+            '#808080',  // Color 20: Gray
+            '#C0C0C0',  // Color 21: Silver
+            '#FF1493',  // Color 22: Deep Pink
+            '#008B8B',  // Color 23: Dark Cyan
+            '#00008B',  // Color 24: Dark Blue
+            '#FF7F50',  // Color 25: Coral
+            '#F08080',  // Color 26: Light Coral
+            '#CD5C5C',  // Color 27: Dark Red
+            '#6A5ACD',  // Color 28: Slate Blue
+            '#B8860B',  // Color 29: Dark Goldenrod
+            '#D2691E',  // Color 30: Chocolate
+            '#8B4513',  // Color 31: Dark Brown
+            '#2E8B57',  // Color 32: Sea Green
+            '#FF8C69',  // Color 33: Light Salmon
+            '#BDB76B',  // Color 34: Dark Khaki
+            '#A0522D',  // Color 35: Sienna
+            '#FFDAB9',  // Color 36: Peach Puff
+            '#DC143C',  // Color 37: Crimson
+            '#00CED1',  // Color 38: Dark Turquoise
+            '#4682B4',  // Color 39: Steel Blue
+            '#FFFFFF',  // Color 40: White
+            '#000000',  // Color 41: Black
+        ];
+    
+        return colors[Number(colorNumber) % colors.length] || '#FFFFFF'; // Make sure to return a default value
+    }
+    
+    
+
     
 }
 
