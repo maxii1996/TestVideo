@@ -167,7 +167,6 @@
  *
  */
 
-
 class ProgressBar {
     constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
         this.id = id;
@@ -190,29 +189,36 @@ class ProgressBar {
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
         this.type = type;
 
+        // Inicializar el valor de la barra de progreso con el valor actual
+        this.progressBarValue = $gameVariables.value(this.actualValue);
+
         SceneManager._scene.addChild(this.sprite);
     }
 
-   
     
     draw() {
-  
-        let value = $gameVariables.value(this.actualValue);
-        value = Math.min(Math.max(value, this.minValue), this.maxValue);
-        $gameVariables.setValue(this.actualValue, value);
-        let progress = (value - this.minValue) / (this.maxValue - this.minValue);
+        // Obtener el valor objetivo de la barra de progreso
+        let targetValue = $gameVariables.value(this.actualValue);
+        targetValue = Math.min(Math.max(targetValue, this.minValue), this.maxValue);
+        $gameVariables.setValue(this.actualValue, targetValue);
+    
+       
+        let lerpSpeed = 0.045; 
+        this.progressBarValue += (targetValue - this.progressBarValue) * lerpSpeed;
+    
+        let progress = (this.progressBarValue - this.minValue) / (this.maxValue - this.minValue);
         progress = Math.max(0, Math.min(1, progress));
-
+    
         this.sprite.bitmap.clear();
         const context = this.sprite.bitmap.context;
         context.imageSmoothingEnabled = true; // Habilitar antialiasing
-
+    
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
         context.lineWidth = this.lineWidth;
         context.strokeStyle = this.backgroundColor;
         context.stroke();
-
+    
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
         context.lineWidth = this.lineWidth;
@@ -222,18 +228,15 @@ class ProgressBar {
         gradient.addColorStop(1, this.color[2]);
         context.strokeStyle = gradient;
         context.stroke();
-
+    
         let processedText = this.processText(this.text);
         context.font = `${this.fontSize}px ${this.font}`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillStyle = this.fontColor;
         context.fillText(processedText, this.textPosX, this.textPosY);
-
-
-        
-
     }
+    
 
 
     remove() {
