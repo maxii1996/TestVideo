@@ -1,6 +1,6 @@
 /*:
  * @target MZ
- * @plugindesc Customizable Circular Progress Bar Plugin 2
+ * @plugindesc Customizable Circular Progress Bar Plugin (Version 1)
  * 
  *
  * @help
@@ -23,8 +23,8 @@
  * 
  * 
  * 
- * @command generateNewCircularBar
- * @text Generate New Circular Bar
+ * @command showProgressBar
+ * @text Show Progress Bar
  * @desc Displays a progress bar with the specified parameters.
  * 
  * @arg id
@@ -44,49 +44,49 @@
  * @desc Current value of the progress bar.
  *
  * @arg minValue
- * @type variable
+ * @type number
  * @text Minimum Value
  * @desc Minimum value of the progress bar.
  *
  * @arg maxValue
- * @type variable
+ * @type number
  * @text Maximum Value
  * @desc Maximum value of the progress bar.
  *
  * @arg posX
- * @type variable
+ * @type number
  * @text Position X
  * @desc Horizontal position of the progress bar on the screen.
  *
  * @arg posY
- * @type variable
+ * @type number
  * @text Position Y
  * @desc Vertical position of the progress bar on the screen.
  *
  * @arg radius
- * @type variable
+ * @type number
  * @text Radius
  * @desc Radius of the progress bar.
  *
  * @arg lineWidth
- * @type variable
+ * @type number
  * @text Line Width
  * @desc Width of the progress line.
  *
  * @arg color
- * @type variable
+ * @type number
  * @text Fill Color
- * @desc Fill color of the progress bar.
+ * @desc Fill color of the progress bar (value from 0 to 31).
  *
  * @arg backgroundColor
- * @type variable
+ * @type number
  * @text Background Color
- * @desc Background color of the progress bar.
+ * @desc Background color of the progress bar (value from 0 to 31).
  *
  * @arg fontColor
- * @type variable
+ * @type number
  * @text Font Color
- * @desc Font color of the text.
+ * @desc Font color of the text (value from 0 to 31).
  *
  * @arg text
  * @type text
@@ -94,12 +94,12 @@
  * @desc Text to display alongside the progress bar.
  *
  * @arg textPosX
- * @type variable
+ * @type number
  * @text Text Position X
  * @desc Horizontal position of the text on the screen.
  *
  * @arg textPosY
- * @type variable
+ * @type number
  * @text Text Position Y
  * @desc Vertical position of the text on the screen.
  *
@@ -109,14 +109,9 @@
  * @desc Font of the text.
  *
  * @arg fontSize
- * @type variable
+ * @type number
  * @text Font Size
  * @desc Font size of the text.
- *
- * @arg switchId
- * @type switch
- * @text Switch ID
- * @desc ID of the switch that controls the visibility of the progress bar.
  *
  * @command hideAllProgressBars
  * @text Hide All Progress Bars
@@ -130,44 +125,37 @@
 
 
 class ProgressBar {
-    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, switchId) {
+    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
         this.id = id;
         this.actualValue = actualValue;
-        this.minValue = $gameVariables.value(minValue);
-        this.maxValue = $gameVariables.value(maxValue);
-        this.switchId = switchId;
-        this.posX = $gameVariables.value(posX);
-        this.posY = $gameVariables.value(posY);
-        this.radius = $gameVariables.value(radius);
-        this.lineWidth = $gameVariables.value(lineWidth);
-        this.color = ColorManager.textColor($gameVariables.value(color));
-        this.backgroundColor = ColorManager.textColor($gameVariables.value(backgroundColor));
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        this.posX = posX;
+        this.posY = posY;
+        this.radius = radius;
+        this.lineWidth = lineWidth;
+        this.color = ColorManager.textColor(color);
+        this.backgroundColor = ColorManager.textColor(backgroundColor);
         this.text = text;
-        this.textPosX = $gameVariables.value(textPosX);
-        this.textPosY = $gameVariables.value(textPosY);
+        this.textPosX = textPosX;
+        this.textPosY = textPosY;
         this.font = font;
-        this.fontSize = $gameVariables.value(fontSize);
-        this.fontColor = ColorManager.textColor($gameVariables.value(fontColor));
+        this.fontSize = fontSize;
+        this.fontColor = ColorManager.textColor(fontColor);
         this.sprite = sprite;
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
+        this.type = type; // añade esto al final de tu constructor
 
         SceneManager._scene.addChild(this.sprite);
     }
 
     draw() {
-        if (this.switchId && $gameSwitches.value(this.switchId)) {
-            return;
-        }
-    
-        this.actualValue = $gameVariables.value(this.actualValue);
-        this.minValue = $gameVariables.value(this.minValue);
-        this.maxValue = $gameVariables.value(this.maxValue);
-        
-        let value = this.actualValue;
+        let value = $gameVariables.value(this.actualValue);
         value = Math.min(Math.max(value, this.minValue), this.maxValue);
+        $gameVariables.setValue(this.actualValue, value);
         let progress = (value - this.minValue) / (this.maxValue - this.minValue);
         progress = Math.max(0, Math.min(1, progress));
-    
+
         this.sprite.bitmap.clear();
         const context = this.sprite.bitmap.context;
         context.beginPath();
@@ -175,13 +163,13 @@ class ProgressBar {
         context.lineWidth = this.lineWidth;
         context.strokeStyle = this.backgroundColor;
         context.stroke();
-    
+
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
         context.lineWidth = this.lineWidth;
         context.strokeStyle = this.color;
         context.stroke();
-    
+
         let processedText = this.processText(this.text);
         context.font = `${this.fontSize}px ${this.font}`;
         context.textAlign = 'center';
@@ -189,9 +177,7 @@ class ProgressBar {
         context.fillStyle = this.fontColor;
         context.fillText(processedText, this.textPosX, this.textPosY);
     }
-    
-    
-    
+
 
     remove() {
         SceneManager._scene.removeChild(this.sprite);
@@ -206,7 +192,9 @@ class ProgressBar {
         text = text.replace(/\\party4\[(\w+)\]/g, (_, p1) => $gameParty.members()[3] ? (typeof $gameParty.members()[3][p1] === "function" ? $gameParty.members()[3][p1]() : $gameParty.members()[3][p1]) : 0);
         return text;
     }
+    
 }
+
 
 
 
@@ -256,15 +244,13 @@ Scene_Map.prototype.update = function() {
     }
 };
 
-PluginManager.registerCommand('ProgressBar', 'generateNewCircularBar', args => {
-    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, switchId } = args;
+PluginManager.registerCommand('ProgressBar', 'showProgressBar', args => {
+    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor } = args;
     let sprite = ProgressBars.list[id] ? ProgressBars.list[id].sprite : new Sprite();
     ImageManager.loadSystem('Window').addLoadListener(() => {
-        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, switchId);
+        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor);
     });
 });
-
-
 
 PluginManager.registerCommand('ProgressBar', 'removeProgressBar', args => {
     const { id } = args;
