@@ -159,9 +159,12 @@ class ProgressBar {
             return;
         }
     
-        let value = $gameVariables.value(this.actualValue);
+        this.actualValue = $gameVariables.value(this.actualValue);
+        this.minValue = $gameVariables.value(this.minValue);
+        this.maxValue = $gameVariables.value(this.maxValue);
+        
+        let value = this.actualValue;
         value = Math.min(Math.max(value, this.minValue), this.maxValue);
-        $gameVariables.setValue(this.actualValue, value);
         let progress = (value - this.minValue) / (this.maxValue - this.minValue);
         progress = Math.max(0, Math.min(1, progress));
     
@@ -186,6 +189,7 @@ class ProgressBar {
         context.fillStyle = this.fontColor;
         context.fillText(processedText, this.textPosX, this.textPosY);
     }
+    
     
     
 
