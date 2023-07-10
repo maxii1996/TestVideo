@@ -1,6 +1,6 @@
 /*:
  * @target MZ
- * @plugindesc Customizable Circular Progress Bar Plugin 2
+ * @plugindesc Customizable Circular Progress Bar Plugin 3
  * 
  *
  * @help
