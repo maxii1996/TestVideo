@@ -1,6 +1,6 @@
 /*:
  * @target MZ
- * @plugindesc Plugin de Barra de Progreso Circular Personalizable
+ * @plugindesc Plugin de Barra de Progreso Circular Personalizable 2
  * 
  *
  * @help
@@ -21,9 +21,19 @@
  * nextLevelExp : Experiencia necesaria para el próximo nivel.
  * name : Nombre del personaje.
  * 
+ * 
+ * 
  * @command showProgressBar
  * @text Mostrar Barra de Progreso
  * @desc Muestra una barra de progreso con los parámetros especificados.
+ * 
+ * @command hideAllProgressBars
+* @text Ocultar todas las barras de progreso
+* @desc Oculta todas las barras de progreso existentes.
+
+* @command showAllProgressBars
+* @text Mostrar todas las barras de progreso
+* @desc Muestra todas las barras de progreso existentes si ya han sido inicializadas.
  *
  * @arg id
  * @type number
@@ -250,6 +260,24 @@ PluginManager.registerCommand('ProgressBar', 'removeProgressBar', args => {
         delete ProgressBars.list[id];
     }
 });
+
+
+// Comando para ocultar todas las barras de progreso
+PluginManager.registerCommand('ProgressBar', 'hideAllProgressBars', args => {
+    for (let id in ProgressBars.list) {
+        ProgressBars.list[id].sprite.visible = false;
+    }
+});
+
+// Comando para mostrar todas las barras de progreso
+PluginManager.registerCommand('ProgressBar', 'showAllProgressBars', args => {
+    for (let id in ProgressBars.list) {
+        ProgressBars.list[id].sprite.visible = true;
+    }
+});
+
+
+
 
 const ProgressBars = {
     list: {}
