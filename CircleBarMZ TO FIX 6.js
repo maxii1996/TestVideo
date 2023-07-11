@@ -107,55 +107,42 @@
  * @text Line Width
  * @desc Width of the progress line.
  *
-* @param color1
-* @type text
-* @text Fill Color 1
-* @desc First fill color of the progress bar (value from 0 to 31 or a hexadecimal color).
-* @default 0
+ * @arg color1
+ * @type number
+ * @text Fill Color 1
+ * @desc First fill color of the progress bar (value from 0 to 31).
  *
-* @param color2
-* @type text
-* @text Fill Color 2
-* @desc Second fill color of the progress bar (value from 0 to 31 or a hexadecimal color).
-* @default 0
+ * @arg color2
+ * @type number
+ * @text Fill Color 2
+ * @desc Second fill color of the progress bar (value from 0 to 31).
  *
-* @param color3
-* @type text
-* @text Fill Color 3
-* @desc Third fill color of the progress bar (value from 0 to 31 or a hexadecimal color).
-* @default 0
+ * @arg color3
+ * @type number
+ * @text Fill Color 3
+ * @desc Third fill color of the progress bar (value from 0 to 31).
  *
-* @param colorOpacity
-* @type number
-* @decimals 2
-* @min 0
-* @max 1
-* @text Color Opacity
-* @desc Opacity of the progress bar color (value from 0 to 1).
-* @default 1
-
-* @param backgroundColorOpacity
-* @type number
-* @decimals 2
-* @min 0
-* @max 1
-* @text Background Color Opacity
-* @desc Opacity of the progress bar background color (value from 0 to 1).
-* @default 1
+ * @arg backgroundColor
+ * @type number
+ * @text Background Color
+ * @desc Background color of the progress bar (value from 0 to 31).
  * 
  * 
- * 
-* @param backgroundColor
-* @type text
-* @text Background Color
-* @desc Background color of the progress bar (value from 0 to 31 or a hexadecimal color).
-* @default 0
+ * @arg colorOpacity
+ * @type number
+ * @text Color Opacity
+ * @desc Opacity of the progress bar color (value from 0 to 1).
+ * @default 1
+ * @arg backgroundColorOpacity
+ * @type number
+ * @text Background Color Opacity
+ * @desc Opacity of the progress bar background color (value from 0 to 1).
+ * @default 1
  *
-* @param fontColor
-* @type text
-* @text Font Color
-* @desc Font color of the text (value from 0 to 31 or a hexadecimal color).
-* @default 0
+ * @arg fontColor
+ * @type number
+ * @text Font Color
+ * @desc Font color of the text (value from 0 to 31).
  *
  * @arg text
  * @type text
@@ -192,6 +179,7 @@
  *
  */
 
+
 class ProgressBar {
     constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type, colorOpacity, backgroundColorOpacity) {
         this.id = id;
@@ -203,8 +191,8 @@ class ProgressBar {
         this.radius = radius;
         this.lineWidth = lineWidth;
         this.color = [this.parseColor(color1, colorOpacity), this.parseColor(color2, colorOpacity), this.parseColor(color3, colorOpacity)];
-    this.backgroundColor = this.parseColor(backgroundColor, backgroundColorOpacity);
-
+        this.backgroundColor = this.parseColor(backgroundColor, backgroundColorOpacity);
+    
         this.text = text;
         this.textPosX = textPosX;
         this.textPosY = textPosY;
@@ -215,21 +203,22 @@ class ProgressBar {
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
         this.type = type;
 
-        // Inicializar el valor de la barra de progreso con el valor actual
+    
         this.progressBarValue = $gameVariables.value(this.actualValue);
 
         SceneManager._scene.addChild(this.sprite);
     }
 
+   
     
     draw() {
-        // Obtener el valor objetivo de la barra de progreso
+    
         let targetValue = $gameVariables.value(this.actualValue);
         targetValue = Math.min(Math.max(targetValue, this.minValue), this.maxValue);
         $gameVariables.setValue(this.actualValue, targetValue);
     
-       
-        let lerpSpeed = 0.045; 
+      
+        let lerpSpeed = 0.035; 
         this.progressBarValue += (targetValue - this.progressBarValue) * lerpSpeed;
     
         let progress = (this.progressBarValue - this.minValue) / (this.maxValue - this.minValue);
@@ -237,7 +226,7 @@ class ProgressBar {
     
         this.sprite.bitmap.clear();
         const context = this.sprite.bitmap.context;
-        context.imageSmoothingEnabled = true; // Habilitar antialiasing
+        context.imageSmoothingEnabled = true; 
     
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
@@ -281,15 +270,16 @@ class ProgressBar {
 
 
 
+    
     parseColor(color, opacity = 1) {
-        // Si el color comienza con '#', es un color hexadecimal
+       
         if (color.startsWith('#')) {
             return color + Math.round(opacity * 255).toString(16).padStart(2, '0');
         }
     
-        // Si no, es un número de color
+ 
         const colors = [
-           
+         
             
             '#FF0000',  // Color 0: Red
             '#FFA500',  // Color 1: Orange
@@ -335,16 +325,11 @@ class ProgressBar {
             '#000000',  // Color 41: Black
 
 
-
-
         ];
     
-        return colors[Number(color) % colors.length] || '#FFFFFF'; // Asegúrate de devolver un valor predeterminado
+        return colors[Number(color) % colors.length] || '#FFFFFF'; 
     }
     
-    
-    
-
     
 }
 
