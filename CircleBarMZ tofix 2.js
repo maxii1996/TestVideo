@@ -263,25 +263,33 @@ class ProgressBar {
         let targetValue = $gameVariables.value(this.actualValue);
         targetValue = Math.min(Math.max(targetValue, this.minValue), this.maxValue);
         $gameVariables.setValue(this.actualValue, targetValue);
-
+    
         let lerpSpeed = 0.035;
         this.progressBarValue += (targetValue - this.progressBarValue) * lerpSpeed;
-
+    
         let progress = (this.progressBarValue - this.minValue) / (this.maxValue - this.minValue);
         progress = Math.max(0, Math.min(1, progress));
-
+    
         this.sprite.bitmap.clear();
         const context = this.sprite.bitmap.context;
         context.imageSmoothingEnabled = true;
         context.shadowColor = this.shadowEnabled ? this.shadowColor : 'transparent';
         context.shadowBlur = this.shadowBlur;
-
+    
+        if (this.borderEnabled) {
+            context.beginPath();
+            context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
+            context.strokeStyle = this.borderColor;
+            context.lineWidth = this.borderWidth;
+            context.stroke();
+        }
+    
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
         context.lineWidth = this.lineWidth;
         context.strokeStyle = this.backgroundColor;
         context.stroke();
-
+    
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
         context.lineWidth = this.lineWidth;
@@ -291,13 +299,7 @@ class ProgressBar {
         gradient.addColorStop(1, this.color[2]);
         context.strokeStyle = gradient;
         context.stroke();
-
-        if (this.borderEnabled) {
-            context.strokeStyle = this.borderColor;
-            context.lineWidth = this.borderWidth;
-            context.stroke();
-        }
-
+    
         let processedText = this.processText(this.text);
         context.font = `${this.fontSize}px ${this.font}`;
         context.textAlign = 'center';
@@ -305,6 +307,7 @@ class ProgressBar {
         context.fillStyle = this.fontColor;
         context.fillText(processedText, this.textPosX, this.textPosY);
     }
+    
 
 
 
