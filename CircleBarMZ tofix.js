@@ -124,6 +124,41 @@
     * @text Line Width
     * @desc Width of the progress line.
     *
+    * 
+    * 
+    * 
+    * @arg shadowEnabled
+    * @type boolean
+    * @text Shadow Enabled
+    * @desc Enable or disable shadow.
+    * 
+    * @arg shadowColor
+    * @type text
+    * @text Shadow Color
+    * @desc Color of the shadow. You Can Use #Hex Colors too using Text Tab. (Example: #ff0000 is red)
+    * 
+    * @arg shadowBlur
+    * @type number
+    * @text Shadow Blur
+    * @desc Blur intensity of the shadow.
+    * 
+    * @arg borderEnabled
+    * @type boolean
+    * @text Border Enabled
+    * @desc Enable or disable border.
+    * 
+    * @arg borderColor
+    * @type text
+    * @text Border Color
+    * @desc Color of the border. You Can Use #Hex Colors too using Text Tab. (Example: #ff0000 is red)
+    * 
+    * @arg borderWidth
+    * @type number
+    * @text Border Width
+    * @desc Width of the border.
+    * 
+    * 
+    * 
     * @arg color1
     * @type number
     * @text Fill Color 1
@@ -188,7 +223,7 @@
 
 
 class ProgressBar {
-    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
+    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type, shadowEnabled, shadowColor, shadowBlur, borderEnabled, borderColor, borderWidth) {
         this.id = id;
         this.actualValue = actualValue;
         this.minValue = minValue;
@@ -210,6 +245,12 @@ class ProgressBar {
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
         this.type = type;
 
+        this.shadowEnabled = shadowEnabled;
+        this.shadowColor = this.parseColor(shadowColor);
+        this.shadowBlur = shadowBlur;
+        this.borderEnabled = borderEnabled;
+        this.borderColor = this.parseColor(borderColor);
+        this.borderWidth = borderWidth;
 
         this.progressBarValue = $gameVariables.value(this.actualValue);
 
@@ -219,11 +260,9 @@ class ProgressBar {
 
 
     draw() {
-
         let targetValue = $gameVariables.value(this.actualValue);
         targetValue = Math.min(Math.max(targetValue, this.minValue), this.maxValue);
         $gameVariables.setValue(this.actualValue, targetValue);
-
 
         let lerpSpeed = 0.035;
         this.progressBarValue += (targetValue - this.progressBarValue) * lerpSpeed;
@@ -234,6 +273,8 @@ class ProgressBar {
         this.sprite.bitmap.clear();
         const context = this.sprite.bitmap.context;
         context.imageSmoothingEnabled = true;
+        context.shadowColor = this.shadowEnabled ? this.shadowColor : 'transparent';
+        context.shadowBlur = this.shadowBlur;
 
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
@@ -250,6 +291,12 @@ class ProgressBar {
         gradient.addColorStop(1, this.color[2]);
         context.strokeStyle = gradient;
         context.stroke();
+
+        if (this.borderEnabled) {
+            context.strokeStyle = this.borderColor;
+            context.lineWidth = this.borderWidth;
+            context.stroke();
+        }
 
         let processedText = this.processText(this.text);
         context.font = `${this.fontSize}px ${this.font}`;
@@ -390,10 +437,10 @@ Scene_Map.prototype.update = function () {
 };
 
 PluginManager.registerCommand('ProgressBar', 'showProgressBar', args => {
-    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor } = args;
+    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, shadowEnabled, shadowColor, shadowBlur, borderEnabled, borderColor, borderWidth } = args;
     let sprite = ProgressBars.list[id] ? ProgressBars.list[id].sprite : new Sprite();
     ImageManager.loadSystem('Window').addLoadListener(() => {
-        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor);
+        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, shadowEnabled, shadowColor, shadowBlur, borderEnabled, borderColor, borderWidth);
     });
 });
 
