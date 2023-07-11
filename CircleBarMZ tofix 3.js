@@ -278,9 +278,9 @@ class ProgressBar {
     
         if (this.borderEnabled) {
             context.beginPath();
-            context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
-            context.strokeStyle = this.borderColor;
+            context.arc(this.posX, this.posY, this.radius + this.borderWidth / 2, 0, Math.PI * 2);
             context.lineWidth = this.borderWidth;
+            context.strokeStyle = this.borderColor;
             context.stroke();
         }
     
