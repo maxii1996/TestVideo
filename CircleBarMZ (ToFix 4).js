@@ -145,6 +145,35 @@
     * @desc Background color of the progress bar You Can Use #Hex Colors too using Text Tab. (Example: #ff0000 is red)
     * 
     * 
+    *  @arg shadowEnable
+    * @type boolean
+    * @text Shadow Enable
+    * @desc Enable or disable text shadow.
+    * @default true
+    *
+    * @arg shadowBlur
+    * @type number
+    * @text Shadow Blur
+    * @desc The level of blur applied to the text shadow.
+    * @default 4
+    *
+    * @arg shadowColor
+    * @type text
+    * @text Shadow Color
+    * @desc The color of the text shadow in rgba format.
+    * @default rgba(0, 0, 0, 0.8)
+    *
+    * @arg shadowOffsetX
+    * @type number
+    * @text Shadow Offset X
+    * @desc The horizontal distance of the text shadow.
+    * @default 2
+    *
+    * @arg shadowOffsetY
+    * @type number
+    * @text Shadow Offset Y
+    * @desc The vertical distance of the text shadow.
+    * @default 2
     *
     * @arg fontColor
     * @type number
@@ -208,7 +237,7 @@
 
 
 class ProgressBar {
-    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
+    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type, shadowEnable, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY) {
         this.id = id;
         this.targetOpacity = sprite.opacity;  
         this.actualValue = actualValue;
@@ -227,6 +256,11 @@ class ProgressBar {
         this.font = font;
         this.fontSize = fontSize;
         this.fontColor = this.parseColor(fontColor);
+        this.shadowEnable = shadowEnable;
+        this.shadowBlur = shadowBlur;
+        this.shadowColor = shadowColor;
+        this.shadowOffsetX = shadowOffsetX;
+        this.shadowOffsetY = shadowOffsetY;
         this.sprite = sprite;
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
         this.type = type;
@@ -274,13 +308,23 @@ class ProgressBar {
         context.strokeStyle = gradient;
         context.stroke();
 
+        
         let processedText = this.processText(this.text);
         context.font = `${this.fontSize}px ${this.font}`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillStyle = this.fontColor;
+
+        if (this.shadowEnable) {
+            context.shadowBlur = this.shadowBlur;
+            context.shadowColor = this.shadowColor;
+            context.shadowOffsetX = this.shadowOffsetX;
+            context.shadowOffsetY = this.shadowOffsetY;
+        }
+
         context.fillText(processedText, this.textPosX, this.textPosY);
     }
+
 
 
 
@@ -413,13 +457,12 @@ Scene_Map.prototype.update = function () {
 };
 
 PluginManager.registerCommand('ProgressBar', 'showProgressBar', args => {
-    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor } = args;
+    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, shadowEnable, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY } = args;
     let sprite = ProgressBars.list[id] ? ProgressBars.list[id].sprite : new Sprite();
     ImageManager.loadSystem('Window').addLoadListener(() => {
-        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor);
+        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, shadowEnable, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY);
     });
 });
-
 
 PluginManager.registerCommand('ProgressBar', 'removeProgressBar', args => {
     const { id } = args;
