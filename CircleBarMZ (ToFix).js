@@ -184,12 +184,33 @@
     * @text Show All Progress Bars
     * @desc Shows all existing progress bars if they have already been initialized.
     *
+    * @command hideProgressBarByID
+    * @text Hide Progress Bar By ID
+    * @desc Hides a progress bar with the specified ID.
+    *
+    * @arg id
+    * @type number
+    * @text ID
+    * @desc Unique ID of the progress bar.
+    *
+    * @command showProgressBarByID
+    * @text Show Progress Bar By ID
+    * @desc Shows a progress bar with the specified ID.
+    *
+    * @arg id
+    * @type number
+    * @text ID
+    * @desc Unique ID of the progress bar.
+    * 
+    * 
+    * 
     */
 
 
 class ProgressBar {
     constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
         this.id = id;
+        this.targetOpacity = sprite.opacity;  
         this.actualValue = actualValue;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -227,6 +248,8 @@ class ProgressBar {
 
         let lerpSpeed = 0.035;
         this.progressBarValue += (targetValue - this.progressBarValue) * lerpSpeed;
+        this.sprite.opacity += (this.targetOpacity - this.sprite.opacity) * lerpSpeed - 0.4;  
+
 
         let progress = (this.progressBarValue - this.minValue) / (this.maxValue - this.minValue);
         progress = Math.max(0, Math.min(1, progress));
@@ -420,6 +443,24 @@ PluginManager.registerCommand('ProgressBar', 'showAllProgressBars', args => {
         ProgressBars.list[id].sprite.visible = true;
     }
 });
+
+
+PluginManager.registerCommand('ProgressBar', 'hideProgressBarByID', args => {
+    const { id } = args;
+    if (ProgressBars.list[id]) {
+        // Iniciar la transición de opacidad a 0
+        ProgressBars.list[id].targetOpacity = 0;
+    }
+});
+
+PluginManager.registerCommand('ProgressBar', 'showProgressBarByID', args => {
+    const { id } = args;
+    if (ProgressBars.list[id]) {
+        // Iniciar la transición de opacidad a 255
+        ProgressBars.list[id].targetOpacity = 255;
+    }
+});
+
 
 
 
