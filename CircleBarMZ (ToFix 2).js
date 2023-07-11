@@ -175,45 +175,6 @@
     * @type number
     * @text Font Size
     * @desc Font size of the text.
-    * 
-    * 
-    * 
-    * @arg textOutlineColor
-    * @type text
-    * @text Text Outline Color
-    * @desc Outline color of the text. You Can Use #Hex Colors too using Text Tab. (Example: #ff0000 is red)
-
-    * @arg textOutlineWidth
-    * @type number
-    * @text Text Outline Width
-    * @desc Outline width of the text.
-
-    * @arg textShadowColor
-    * @type text
-    * @text Text Shadow Color
-    * @desc Shadow color of the text. You Can Use #Hex Colors too using Text Tab. (Example: #ff0000 is red)
-
-    * @arg textShadowBlur
-    * @type number
-    * @text Text Shadow Blur
-    * @desc Shadow blur of the text.
-
-    * @arg textShadowOffsetX
-    * @type number
-    * @text Text Shadow Offset X
-    * @desc Horizontal shadow offset of the text.
-
-    * @arg textShadowOffsetY
-    * @type number
-    * @text Text Shadow Offset Y
-    * @desc Vertical shadow offset of the text.
-    * 
-    * 
-    * 
-    * 
-    * 
-    * 
-    * 
     *
     * @command hideAllProgressBars
     * @text Hide All Progress Bars
@@ -247,7 +208,7 @@
 
 
 class ProgressBar {
-    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, textOutlineColor, textOutlineWidth, textShadowColor, textShadowBlur, textShadowOffsetX, textShadowOffsetY, type) {
+    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type) {
         this.id = id;
         this.targetOpacity = sprite.opacity;  
         this.actualValue = actualValue;
@@ -269,12 +230,7 @@ class ProgressBar {
         this.sprite = sprite;
         this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
         this.type = type;
-        this.textOutlineColor = this.parseColor(textOutlineColor);
-        this.textOutlineWidth = textOutlineWidth;
-        this.textShadowColor = this.parseColor(textShadowColor);
-        this.textShadowBlur = textShadowBlur;
-        this.textShadowOffsetX = textShadowOffsetX;
-        this.textShadowOffsetY = textShadowOffsetY;
+
 
         this.progressBarValue = $gameVariables.value(this.actualValue);
 
@@ -320,12 +276,6 @@ class ProgressBar {
 
         let processedText = this.processText(this.text);
         context.font = `${this.fontSize}px ${this.font}`;
-        context.strokeStyle = this.textOutlineColor;
-        context.lineWidth = this.textOutlineWidth;
-        context.shadowColor = this.textShadowColor;
-        context.shadowBlur = this.textShadowBlur;
-        context.shadowOffsetX = this.textShadowOffsetX;
-        context.shadowOffsetY = this.textShadowOffsetY;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillStyle = this.fontColor;
@@ -339,8 +289,6 @@ class ProgressBar {
     }
 
     processText(text) {
-
-        
         text = text.replace(/\\v\[(\d+)\]/g, (_, p1) => $gameVariables.value(Number(p1)));
         text = text.replace(/\\c\[(\d+)\]/g, (_, p1) => `\\c[${Number(p1)}]`);
         text = text.replace(/\\party1\[(\w+)\]/g, (_, p1) => $gameParty.members()[0] ? (typeof $gameParty.members()[0][p1] === "function" ? $gameParty.members()[0][p1]() : $gameParty.members()[0][p1]) : 0);
@@ -355,13 +303,10 @@ class ProgressBar {
 
     parseColor(color) {
 
-        if (!color) {
-            return '#FFFFFF';  // Devuelve blanco por defecto si el color es undefined
-        }
-    
         if (color.startsWith('#')) {
             return color;
         }
+
 
         const colors = [
 
