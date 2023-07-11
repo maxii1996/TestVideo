@@ -139,7 +139,7 @@ class ProgressBar {
 
 let $progressBars = [];
 
-PluginManager.registerCommand('CircleBarMZ', 'showProgressBar', args => {
+PluginManager.registerCommand('CircleBarMZDemo', 'showProgressBar', args => {
   let id = 1;
   let actualValue = Number(args.actualValue);
   let minValue = Number(args.minValue);
@@ -152,19 +152,19 @@ PluginManager.registerCommand('CircleBarMZ', 'showProgressBar', args => {
   $progressBars.push(progressBar);
 });
 
-PluginManager.registerCommand('CircleBarMZ', 'hideAllProgressBars', args => {
+PluginManager.registerCommand('CircleBarMZDemo', 'hideAllProgressBars', args => {
   $progressBars.forEach(progressBar => {
       progressBar.hide();
   });
 });
 
-PluginManager.registerCommand('CircleBarMZ', 'showAllProgressBars', args => {
+PluginManager.registerCommand('CircleBarMZDemo', 'showAllProgressBars', args => {
   $progressBars.forEach(progressBar => {
       progressBar.show();
   });
 });
 
-PluginManager.registerCommand('CircleBarMZ', 'hideProgressBarByID', args => {
+PluginManager.registerCommand('CircleBarMZDemo', 'hideProgressBarByID', args => {
   let id = 1;
   let progressBar = $progressBars.find(progressBar => progressBar.id === id);
   if (progressBar) {
@@ -172,7 +172,7 @@ PluginManager.registerCommand('CircleBarMZ', 'hideProgressBarByID', args => {
   }
 });
 
-PluginManager.registerCommand('CircleBarMZ', 'showProgressBarByID', args => {
+PluginManager.registerCommand('CircleBarMZDemo', 'showProgressBarByID', args => {
   let id = 1;
   let progressBar = $progressBars.find(progressBar => progressBar.id === id);
   if (progressBar) {
