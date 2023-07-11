@@ -107,46 +107,55 @@
  * @text Line Width
  * @desc Width of the progress line.
  *
- * @arg color1
- * @type number
- * @text Fill Color 1
- * @desc First fill color of the progress bar (value from 0 to 31).
+* @param color1
+* @type text
+* @text Fill Color 1
+* @desc First fill color of the progress bar (value from 0 to 31 or a hexadecimal color).
+* @default 0
  *
- * @arg color2
- * @type number
- * @text Fill Color 2
- * @desc Second fill color of the progress bar (value from 0 to 31).
+* @param color2
+* @type text
+* @text Fill Color 2
+* @desc Second fill color of the progress bar (value from 0 to 31 or a hexadecimal color).
+* @default 0
  *
- * @arg color3
- * @type number
- * @text Fill Color 3
- * @desc Third fill color of the progress bar (value from 0 to 31).
+* @param color3
+* @type text
+* @text Fill Color 3
+* @desc Third fill color of the progress bar (value from 0 to 31 or a hexadecimal color).
+* @default 0
  *
- * @arg colorOpacity
+* @param colorOpacity
 * @type number
+* @decimals 2
+* @min 0
+* @max 1
 * @text Color Opacity
 * @desc Opacity of the progress bar color (value from 0 to 1).
 * @default 1
 
-* @arg backgroundColorOpacity
+* @param backgroundColorOpacity
 * @type number
+* @decimals 2
+* @min 0
+* @max 1
 * @text Background Color Opacity
 * @desc Opacity of the progress bar background color (value from 0 to 1).
 * @default 1
  * 
  * 
  * 
- * 
- * 
- * @arg backgroundColor
- * @type number
- * @text Background Color
- * @desc Background color of the progress bar (value from 0 to 31).
+* @param backgroundColor
+* @type text
+* @text Background Color
+* @desc Background color of the progress bar (value from 0 to 31 or a hexadecimal color).
+* @default 0
  *
- * @arg fontColor
- * @type number
- * @text Font Color
- * @desc Font color of the text (value from 0 to 31).
+* @param fontColor
+* @type text
+* @text Font Color
+* @desc Font color of the text (value from 0 to 31 or a hexadecimal color).
+* @default 0
  *
  * @arg text
  * @type text
