@@ -1,18 +1,34 @@
 /*:
  * @target MZ
- * @plugindesc Customizable Circular Progress Bar Plugin
+ * @plugindesc Create circular progress bars with lots of customization!
  * @url https://undermax.itch.io/
  * @author Maxii1996 | Undermax Games
  *
  *
  * @help
- * Welcome to the Customizable Circular Progress Bar Plugin!
+ * 
+ * _________________________Ver 1.0.0_______________________
+ * 
+ * 
+ *   _____ _          _      ____             __  __ ______
+ *  / ____(_)        | |    |  _ \           |  \/  |___  /
+ * | |     _ _ __ ___| | ___| |_) | __ _ _ __| \  / |  / / 
+ * | |    | | '__/ __| |/ _ |  _ < / _` | '__| |\/| | / /  
+ * | |____| | | | (__| |  __| |_) | (_| | |  | |  | |/ /__ 
+ *  \_____|_|_|  \___|_|\___|____/ \__,_|_|  |_|  |_/_____|           
+ * 
+ * 
+ * ___________________By Undermax Games______________________
+ * 
+ * Welcome to the Customizable Circular Progress Bar Plugin for 
+ * RPG MAKER MZ.
  * 
  * This plugin allows you to display a circular progress bar on the map
  * with basic customizations. It provides an intuitive way to showcase
  * important information to the players.
  *
- * Supported Attributes:
+ * Supported Attributes for Custom text:
+ * 
  * - hp: Current health points.
  * - mhp: Maximum health points.
  * - mp: Current magic points.
@@ -25,8 +41,26 @@
  * - luk: Luck.
  * - level: Current level.
  * - exp: Current experience.
- * - nextLevelExp: Experience needed for the next level.
  * - name: Character's name.
+ * 
+ * Use:
+ * 
+ * \partyX[parameter]
+ * 
+ * Where X is the ID of Current Party Member (From 1-4)
+ * 
+ * Example: 
+ * 
+ * \party1[hp] => HP from Party member 1 (Leader)
+ * 
+ * Tip: You can also use variables with \v[X]
+ * 
+ * Where X is the Variable to show.
+ * 
+ * You can combine all the ways you want!
+ * 
+ * 
+ * If you don't know how to use HEX colors, you can choose colors from this list.
  * 
  * Color IDs:
  * Color 0: Red
@@ -62,8 +96,8 @@
  * Color 30: White
  *
  * Usage:
- * To display the circular progress bar for a specific attribute of a party member,
- * set up the plugin command with the desired attribute code.
+ * To display the circular progress bar for a specific attribute of a party
+ * member, set up the plugin command with the desired attribute code.
  *
  *
  * Thank you for purchasing the Customizable Circular Progress Bar Plugin!
@@ -73,9 +107,8 @@
  *
  * Happy game development!
  *
- * 
- * @command showProgressBar
- * @text Show Progress Bar
+    * @command showProgressBar
+    * @text Show Progress Bar
     * @desc Displays a progress bar with the specified parameters.
     * 
     * @arg id
@@ -88,6 +121,7 @@
     * @text Type of Bar
     * @desc Choose the type of progress bar.
     * @option Full Circle
+    * @default Full Circle
     * 
     * @arg actualValue
     * @type variable
@@ -112,17 +146,19 @@
     * @arg posY
     * @type number
     * @text Position Y
-    * @desc Vertical position of the progress bar on the screen.
+    * @desc Vertical position of the progress bar on the screen. 
     *
     * @arg radius
     * @type number
     * @text Radius
     * @desc Radius of the progress bar.
+    * @default 40
     *
     * @arg lineWidth
     * @type number
     * @text Line Width
     * @desc Width of the progress line.
+    * @default 10
     *
     * @arg color1
     * @type number
@@ -145,35 +181,35 @@
     * @desc Background color of the progress bar You Can Use #Hex Colors too using Text Tab. (Example: #ff0000 is red)
     * 
     * 
-    *  @arg shadowEnable
+    * @arg shadowEnabled
     * @type boolean
-    * @text Shadow Enable
-    * @desc Enable or disable text shadow.
-    * @default true
+    * @text Shadow Enabled
+    * @desc Enable or disable shadow for the text.
+    * @default false
     *
     * @arg shadowBlur
     * @type number
     * @text Shadow Blur
-    * @desc The level of blur applied to the text shadow.
-    * @default 4
+    * @desc The level of blur for the shadow.
+    * @default 3
     *
     * @arg shadowColor
     * @type text
     * @text Shadow Color
-    * @desc The color of the text shadow in rgba format.
-    * @default rgba(0, 0, 0, 0.8)
+    * @desc The color of the shadow in RGBA format.
+    * @default rgba(20, 20, 20, 0.35)
     *
     * @arg shadowOffsetX
     * @type number
     * @text Shadow Offset X
-    * @desc The horizontal distance of the text shadow.
-    * @default 2
+    * @desc The horizontal distance of the shadow. (Use Text Tab to insert Negative Vales. Ex. -4)
+    * @default 0.1
     *
     * @arg shadowOffsetY
     * @type number
     * @text Shadow Offset Y
-    * @desc The vertical distance of the text shadow.
-    * @default 2
+    * @desc The vertical distance of the shadow. (Use Text Tab to insert Negative Vales. Ex. -4)
+    * @default 0.18
     *
     * @arg fontColor
     * @type number
@@ -188,30 +224,32 @@
     * @arg textPosX
     * @type number
     * @text Text Position X
-    * @desc Horizontal position of the text on the screen.
+    * @desc Horizontal position of the text on the screen. (Starts from Upper Left)
     *
     * @arg textPosY
     * @type number
     * @text Text Position Y
-    * @desc Vertical position of the text on the screen.
+    * @desc Vertical position of the text on the screen. (Starts from Upper Left)
     *
     * @arg font
     * @type text
     * @text Font
-    * @desc Font of the text.
+    * @desc Font of the text. (Ex. Arial, Segoe UI, Verdana, Calibri, etc...)
+    * @default Calibri
     *
     * @arg fontSize
     * @type number
     * @text Font Size
     * @desc Font size of the text.
+    * @default 25
     *
     * @command hideAllProgressBars
     * @text Hide All Progress Bars
-    * @desc Hides all existing progress bars.
+    * @desc This disable the bar system. If you want to hide a specific bar, use Hide by ID.
     *
     * @command showAllProgressBars
     * @text Show All Progress Bars
-    * @desc Shows all existing progress bars if they have already been initialized.
+    * @desc This enables the bar system. If you want to show a specific bar, use Show by ID.
     *
     * @command hideProgressBarByID
     * @text Hide Progress Bar By ID
@@ -232,72 +270,87 @@
     * @desc Unique ID of the progress bar.
     * 
     * 
-    * 
     */
 
 
 class ProgressBar {
-    constructor(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, type, shadowEnable, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY) {
-        this.id = id;
-        this.targetOpacity = sprite.opacity;  
-        this.actualValue = actualValue;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.posX = posX;
-        this.posY = posY;
-        this.radius = radius;
-        this.lineWidth = lineWidth;
-        this.color = [this.parseColor(color1), this.parseColor(color2), this.parseColor(color3)];
-        this.backgroundColor = this.parseColor(backgroundColor);
-
-        this.text = text;
-        this.textPosX = textPosX;
-        this.textPosY = textPosY;
-        this.font = font;
-        this.fontSize = fontSize;
-        this.fontColor = this.parseColor(fontColor);
-        this.shadowEnable = shadowEnable;
-        this.shadowBlur = shadowBlur;
-        this.shadowColor = shadowColor;
-        this.shadowOffsetX = shadowOffsetX;
-        this.shadowOffsetY = shadowOffsetY;
-        this.sprite = sprite;
-        this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
-        this.type = type;
-
-
-        this.progressBarValue = $gameVariables.value(this.actualValue);
-
-        SceneManager._scene.addChild(this.sprite);
+    constructor(
+      id,
+      sprite,
+      actualValue,
+      minValue,
+      maxValue,
+      posX,
+      posY,
+      radius,
+      lineWidth,
+      color1,
+      color2,
+      color3,
+      backgroundColor,
+      text,
+      textPosX,
+      textPosY,
+      font,
+      fontSize,
+      fontColor,
+      shadowEnabled,
+      shadowBlur,
+      shadowColor,
+      shadowOffsetX,
+      shadowOffsetY
+    ) {
+      this.id = id;
+      this.targetOpacity = sprite.opacity;
+      this.actualValue = actualValue;
+      this.minValue = minValue;
+      this.maxValue = maxValue;
+      this.posX = posX;
+      this.posY = posY;
+      this.radius = radius;
+      this.lineWidth = lineWidth;
+      this.color = [this.parseColor(color1), this.parseColor(color2), this.parseColor(color3)];
+      this.backgroundColor = this.parseColor(backgroundColor);
+      this.text = text;
+      this.textPosX = textPosX;
+      this.textPosY = textPosY;
+      this.font = font;
+      this.fontSize = fontSize;
+      this.fontColor = this.parseColor(fontColor);
+      this.shadowEnabled = shadowEnabled;
+      this.shadowBlur = shadowBlur;
+      this.shadowColor = shadowColor;
+      this.shadowOffsetX = shadowOffsetX;
+      this.shadowOffsetY = shadowOffsetY;
+      this.sprite = sprite;
+      this.sprite.bitmap = new Bitmap(Graphics.width, Graphics.height);
+      this.progressBarValue = $gameVariables.value(this.actualValue);
+      SceneManager._scene.addChild(this.sprite);
     }
 
 
-
     draw() {
-
         let targetValue = $gameVariables.value(this.actualValue);
         targetValue = Math.min(Math.max(targetValue, this.minValue), this.maxValue);
         $gameVariables.setValue(this.actualValue, targetValue);
-
-
+      
         let lerpSpeed = 0.035;
         this.progressBarValue += (targetValue - this.progressBarValue) * lerpSpeed;
-        this.sprite.opacity += (this.targetOpacity - this.sprite.opacity) * lerpSpeed - 0.4;  
-
-
+        this.sprite.opacity += (this.targetOpacity - this.sprite.opacity) * lerpSpeed - 0.4;
+      
         let progress = (this.progressBarValue - this.minValue) / (this.maxValue - this.minValue);
         progress = Math.max(0, Math.min(1, progress));
-
+      
         this.sprite.bitmap.clear();
         const context = this.sprite.bitmap.context;
         context.imageSmoothingEnabled = true;
-
+      
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
         context.lineWidth = this.lineWidth;
         context.strokeStyle = this.backgroundColor;
         context.stroke();
-
+      
         context.beginPath();
         context.arc(this.posX, this.posY, this.radius, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
         context.lineWidth = this.lineWidth;
@@ -307,24 +360,28 @@ class ProgressBar {
         gradient.addColorStop(1, this.color[2]);
         context.strokeStyle = gradient;
         context.stroke();
-
-        
+      
         let processedText = this.processText(this.text);
         context.font = `${this.fontSize}px ${this.font}`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillStyle = this.fontColor;
-
-        if (this.shadowEnable) {
+      
+        if (this.shadowEnabled) {
             context.shadowBlur = this.shadowBlur;
             context.shadowColor = this.shadowColor;
             context.shadowOffsetX = this.shadowOffsetX;
             context.shadowOffsetY = this.shadowOffsetY;
+        } else {
+          
+            context.shadowBlur = 0;
+            context.shadowColor = 'transparent';
+            context.shadowOffsetX = 0;
+            context.shadowOffsetY = 0;
         }
-
+    
         context.fillText(processedText, this.textPosX, this.textPosY);
     }
-
 
 
 
@@ -457,12 +514,13 @@ Scene_Map.prototype.update = function () {
 };
 
 PluginManager.registerCommand('ProgressBar', 'showProgressBar', args => {
-    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, shadowEnable, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY } = args;
+    const { id, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, shadowEnabled, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY } = args;
     let sprite = ProgressBars.list[id] ? ProgressBars.list[id].sprite : new Sprite();
     ImageManager.loadSystem('Window').addLoadListener(() => {
-        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, shadowEnable, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY);
+        ProgressBars.list[id] = new ProgressBar(id, sprite, actualValue, minValue, maxValue, posX, posY, radius, lineWidth, color1, color2, color3, backgroundColor, text, textPosX, textPosY, font, fontSize, fontColor, shadowEnabled, shadowBlur, shadowColor, shadowOffsetX, shadowOffsetY);
     });
 });
+
 
 PluginManager.registerCommand('ProgressBar', 'removeProgressBar', args => {
     const { id } = args;
@@ -491,7 +549,6 @@ PluginManager.registerCommand('ProgressBar', 'showAllProgressBars', args => {
 PluginManager.registerCommand('ProgressBar', 'hideProgressBarByID', args => {
     const { id } = args;
     if (ProgressBars.list[id]) {
-        // Iniciar la transición de opacidad a 0
         ProgressBars.list[id].targetOpacity = 0;
     }
 });
@@ -499,7 +556,6 @@ PluginManager.registerCommand('ProgressBar', 'hideProgressBarByID', args => {
 PluginManager.registerCommand('ProgressBar', 'showProgressBarByID', args => {
     const { id } = args;
     if (ProgressBars.list[id]) {
-        // Iniciar la transición de opacidad a 255
         ProgressBars.list[id].targetOpacity = 255;
     }
 });
