@@ -6,6 +6,107 @@
  *
  *
  * @help
+ * 
+ * _________________________Ver 1.0.0_______________________
+ * 
+ * 
+ *   _____ _          _      ____             __  __ ______
+ *  / ____(_)        | |    |  _ \           |  \/  |___  /
+ * | |     _ _ __ ___| | ___| |_) | __ _ _ __| \  / |  / / 
+ * | |    | | '__/ __| |/ _ |  _ < / _` | '__| |\/| | / /  
+ * | |____| | | | (__| |  __| |_) | (_| | |  | |  | |/ /__ 
+ *  \_____|_|_|  \___|_|\___|____/ \__,_|_|  |_|  |_/_____|           
+ * 
+ * 
+ * ___________________By Undermax Games______________________
+ * 
+ * Welcome to the Customizable Circular Progress Bar Plugin for 
+ * RPG MAKER MZ.
+ * 
+ * This plugin allows you to display a circular progress bar on the map
+ * with basic customizations. It provides an intuitive way to showcase
+ * important information to the players.
+ *
+ * Supported Attributes for Custom text:
+ * 
+ * - hp: Current health points.
+ * - mhp: Maximum health points.
+ * - mp: Current magic points.
+ * - mmp: Maximum magic points.
+ * - atk: Attack.
+ * - def: Defense.
+ * - mat: Magic attack.
+ * - mdf: Magic defense.
+ * - agi: Agility.
+ * - luk: Luck.
+ * - level: Current level.
+ * - exp: Current experience.
+ * - name: Character's name.
+ * 
+ * Use:
+ * 
+ * \partyX[parameter]
+ * 
+ * Where X is the ID of Current Party Member (From 1-4)
+ * 
+ * Example: 
+ * 
+ * \party1[hp] => HP from Party member 1 (Leader)
+ * 
+ * Tip: You can also use variables with \v[X]
+ * 
+ * Where X is the Variable to show.
+ * 
+ * You can combine all the ways you want!
+ * 
+ * 
+ * If you don't know how to use HEX colors, you can choose colors from this list.
+ * 
+ * Color IDs:
+ * Color 0: Red
+ * Color 1: Orange
+ * Color 2: Amber
+ * Color 3: Yellow
+ * Color 4: Lime
+ * Color 5: Chartreuse
+ * Color 6: Green
+ * Color 7: Spring Green
+ * Color 8: Cyan
+ * Color 9: Azure
+ * Color 10: Blue
+ * Color 11: Navy
+ * Color 12: Indigo
+ * Color 13: Purple
+ * Color 14: Violet
+ * Color 15: Magenta
+ * Color 16: Pink
+ * Color 17: Salmon
+ * Color 18: Peach
+ * Color 19: Coral
+ * Color 20: Gold
+ * Color 21: Silver
+ * Color 22: Gray
+ * Color 23: Dark Gray
+ * Color 24: Brown
+ * Color 25: Maroon
+ * Color 26: Olive
+ * Color 27: Beige
+ * Color 28: Ivory
+ * Color 29: Cream
+ * Color 30: White
+ *
+ * Usage:
+ * To display the circular progress bar for a specific attribute of a party
+ * member, set up the plugin command with the desired attribute code.
+ *
+ *
+ * Thank you for purchasing the Customizable Circular Progress Bar Plugin!
+ * We appreciate your support and hope this plugin enhances your game by
+ * adding visually appealing circular progress bars to your UI. If you have
+ * any questions or need assistance, please feel free to reach out to us.
+ *
+ * Happy game development!
+ *
     * @command showProgressBar
     * @text Show Progress Bar
     * @desc Displays a progress bar with the specified parameters.
@@ -233,7 +334,6 @@ class ProgressBar {
         let minValue = $gameVariables.value(this.minValue);
         let maxValue = $gameVariables.value(this.maxValue);
         targetValue = Math.min(Math.max(targetValue, minValue), maxValue);
-        $gameVariables.setValue(this.actualValue, targetValue);
       
         let lerpSpeed = 0.035;
         this.progressBarValue += (targetValue - this.progressBarValue) * lerpSpeed;
@@ -274,7 +374,7 @@ class ProgressBar {
             context.shadowOffsetX = this.shadowOffsetX;
             context.shadowOffsetY = this.shadowOffsetY;
         } else {
-          
+      
             context.shadowBlur = 0;
             context.shadowColor = 'transparent';
             context.shadowOffsetX = 0;
@@ -283,7 +383,7 @@ class ProgressBar {
     
         context.fillText(processedText, this.textPosX, this.textPosY);
     }
-
+    
 
 
     remove() {
